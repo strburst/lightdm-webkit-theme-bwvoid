@@ -41,6 +41,10 @@
     }
   };
 
+  window.show_message = function(text, type) {
+    showMessage('Lightdm message (type "' + type + '"): ' + text);
+  };
+
   window.show_prompt = function(text, type) {
     lightdm.respond($('#password').val());
   };

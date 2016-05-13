@@ -1,0 +1,6 @@
+[theme]
+name=bwvoid
+description=Minimal black-and-white theme
+engine=lightdm-webkit-greeter
+url=index.html
+session=gnome

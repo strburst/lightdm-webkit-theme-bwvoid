@@ -1,0 +1,44 @@
+html, body {
+  margin: 10% 10%;
+}
+body {
+  background-color: black;
+  color: white;
+  font-family: monospace;
+
+  text-shadow: 0px 0px 10px white;
+
+  animation-name: subtle-fade-in;
+  animation-duration: .7s;
+}
+
+form {
+  text-shadow: inherit;
+}
+
+label {
+  text-shadow: inherit;
+}
+
+input {
+  color: inherit;
+  font-family: inherit;
+  background-color: black;
+
+  border-width: 1px;
+
+  border-top: none;
+  border-left: none;
+  border-right: none;
+}
+
+@keyframes subtle-fade-in {
+  from {
+    transform: translateY(0.5rem);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0rem);
+    opacity: 1;
+  }
+}

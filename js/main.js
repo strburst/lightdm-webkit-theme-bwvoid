@@ -24,7 +24,7 @@
         showMessage('Attempting to authenticate ' + $('#username').val() +
             '...');
 
-        lightdm.start_authentication($('#username').val());
+        lightdm.authenticate($('#username').val());
       }
     }));
 
@@ -34,7 +34,8 @@
   window.authentication_complete = function() {
     if (lightdm.is_authenticated) {
       showMessage('Authentication successful.');
-      lightdm.login(lightdm.authentication_user, lightdm.default_session);
+      lightdm.start_session_sync(lightdm.authentication_user,
+          lightdm.default_session);
     } else {
       showMessage('Authentication failed.');
     }

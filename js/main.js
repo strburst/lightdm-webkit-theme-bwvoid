@@ -48,11 +48,15 @@
   };
 
   window.show_message = function(text, type) {
-    showMessage('Lightdm message (type "' + type + '"): ' + text);
+    showMessage('LightDM message (type "' + type + '"): ' + text);
   };
 
   window.show_prompt = function(text, type) {
-    lightdm.respond($('#password').val());
+    if (type === 'password') {
+      lightdm.respond($('#password').val());
+    } else {
+      showMessage('Unknown LightDM prompt (type ' + type + '): ' + text);
+    }
   };
 
   window.onerror = function(message, path, line) {

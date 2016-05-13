@@ -11,8 +11,11 @@
       date.getDate();
   }
 
-  function showMessage(msg) {
-    $('#output').prepend('<p>' + msg + '</p>');
+  function showMessage(msg, clearBefore) {
+    if (clearBefore) {
+      $('#messages').children().remove();
+    }
+    $('#messages').prepend('<p>' + msg + '</p>');
   }
 
   $(document).ready(function() {
@@ -22,7 +25,7 @@
     $('#loginForm').find('input').keydown((function(event) {
       if (event.which === 13) {  // Enter; submit username/password
         showMessage('Attempting to authenticate ' + $('#username').val() +
-            '...');
+            '...', true);
 
         $('#username').prop('disabled', true);
         $('#password').prop('disabled', true);

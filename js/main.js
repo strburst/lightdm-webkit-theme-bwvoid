@@ -20,9 +20,12 @@
     $('#putHostnameHere').text(lightdm.hostname);
 
     $('#loginForm').find('input').keydown((function(event) {
-      if (event.which === 13) {  // Enter
+      if (event.which === 13) {  // Enter; submit username/password
         showMessage('Attempting to authenticate ' + $('#username').val() +
             '...');
+
+        $('#username').prop('disabled', true);
+        $('#password').prop('disabled', true);
 
         lightdm.authenticate($('#username').val());
       }
@@ -38,6 +41,9 @@
           lightdm.default_session);
     } else {
       showMessage('Authentication failed.');
+
+      $('#username').prop('disabled', false);
+      $('#password').prop('disabled', false);
     }
   };
 

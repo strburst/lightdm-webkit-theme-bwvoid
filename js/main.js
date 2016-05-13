@@ -34,7 +34,7 @@
   window.authentication_complete = function() {
     if (lightdm.is_authenticated) {
       showMessage('Authentication successful.');
-      lightdm.login(lightdm.authentication_user, 'bspwm');
+      lightdm.login(lightdm.authentication_user, lightdm.default_session);
     } else {
       showMessage('Authentication failed.');
     }

@@ -1,6 +1,8 @@
 (function() {
+  /**
+   * Format a date nicely.
+   */
   function formatDate() {
-    // Format a date nicely
     var toWeekday = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday',
       'Friday', 'Saturday'];
     var toMonth = ['January', 'February', 'March', 'April', 'May', 'June',
@@ -11,6 +13,9 @@
       date.getDate();
   }
 
+  /**
+   * Generic function to place text in the message area.
+   */
   function showMessage(msg, clearBefore) {
     if (clearBefore) {
       $('#messages').children().remove();
@@ -28,6 +33,7 @@
         showMessage('Attempting to authenticate ' + $('#username').val() +
             '...', true);
 
+        // Disable input fields while authentication is occurring
         $('#username').prop('disabled', true);
         $('#password').prop('disabled', true);
 
@@ -38,10 +44,14 @@
     $('#username').focus();
   });
 
+  /**
+   * Handler called when authentication is finished.
+   */
   window.authentication_complete = function() {
     if (lightdm.is_authenticated) {
       showMessage('Authentication successful.');
 
+      // Trigger fade out animation
       $('body').toggleClass('fadeOut');
       setTimeout(function() {
         lightdm.start_session_sync();
@@ -54,10 +64,16 @@
     }
   };
 
+  /**
+   * Handler for lightdm messages (rarely called).
+   */
   window.show_message = function(text, type) {
     showMessage('LightDM message (type "' + type + '"): ' + text);
   };
 
+  /**
+   * Handler for lightdm prompts (usually for the password).
+   */
   window.show_prompt = function(text, type) {
     if (type === 'password') {
       lightdm.respond($('#password').val());
@@ -66,6 +82,9 @@
     }
   };
 
+  /**
+   * Basic error handler to display the error that occured.
+   */
   window.onerror = function(message, path, line) {
     var file = path.split('/').pop();
     showMessage(message + ' in ' + file + ':' + line + '.');

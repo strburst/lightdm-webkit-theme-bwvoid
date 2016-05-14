@@ -23,7 +23,8 @@
     $('#putHostnameHere').text(lightdm.hostname);
 
     $('#loginForm').find('input').keydown((function(event) {
-      if (event.which === 13) {  // Enter; submit username/password
+      if (event.which === 13 && !lightdm.in_authentication) {
+        // Enter; submit username/password
         showMessage('Attempting to authenticate ' + $('#username').val() +
             '...', true);
 

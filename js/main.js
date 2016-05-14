@@ -40,8 +40,11 @@
   window.authentication_complete = function() {
     if (lightdm.is_authenticated) {
       showMessage('Authentication successful.');
-      lightdm.start_session_sync(lightdm.authentication_user,
-          lightdm.default_session);
+
+      $('body').toggleClass('fadeOut');
+      setTimeout(function() {
+        lightdm.start_session_sync();
+      }, 700);
     } else {
       showMessage('Authentication failed.');
 

@@ -23,21 +23,35 @@
     $('#messages').prepend('<p>' + msg + '</p>');
   }
 
+  /**
+   * Toggle or set whether username/password fields are enabled.
+   *
+   * @state if true, enable; if false, disable; if undefined, toggle
+   */
+  function setInputActive(state) {
+    state = typeof state === 'undefined'
+      ?  $('#username').prop('disabled')
+      : state;
+
+    // Set appropriate fields to enabled/disabled
+    $('#username').prop('disabled', !state);
+    $('#password').prop('disabled', !state);
+  }
+
   $(document).ready(function() {
     $('#putDateHere').text(formatDate());
     $('#putHostnameHere').text(lightdm.hostname);
 
     $('#loginForm').find('input').keydown((function(event) {
-      if (event.which === 13 && !lightdm.in_authentication) {
+      if (event.which === 13) {
         // Enter; submit username/password
         showMessage('Attempting to authenticate ' + $('#username').val() +
             '...', true);
 
         // Disable input fields while authentication is occurring
-        $('#username').prop('disabled', true);
-        $('#password').prop('disabled', true);
+        setInputActive(false);
 
-        lightdm.authenticate($('#username').val());
+        lightdm.authenticate();
       }
     }));
 
@@ -59,24 +73,43 @@
     } else {
       showMessage('Authentication failed.');
 
-      $('#username').prop('disabled', false);
-      $('#password').prop('disabled', false);
+      setInputActive(true);
+
+      $('#password').val('');
     }
   };
 
   /**
-   * Handler for lightdm messages (rarely called).
+   * Handler for generic lightdm messages (rarely called).
    */
   window.show_message = function(text, type) {
     showMessage('LightDM message (type "' + type + '"): ' + text);
   };
 
   /**
-   * Handler for lightdm prompts (usually for the password).
+   * Handler for lightdm prompts (e.g. username or password).
    */
   window.show_prompt = function(text, type) {
+    function respondWithField(selector, errorMsg) {
+      var response = $(selector).val();
+      if (response) {
+        lightdm.respond(response);
+      } else {
+        // Nothing in the appropriate field
+        // Cancel authentication and reactivate inputs
+        lightdm.cancel_authentication();
+
+        showMessage(errorMsg);
+
+        setInputActive(true);
+        $(selector).focus();
+      }
+    }
+
     if (type === 'password') {
-      lightdm.respond($('#password').val());
+      respondWithField('#password', 'Enter your password.');
+    } else if (type === 'text') {
+      respondWithField('#username', 'Enter your username.');
     } else {
       showMessage('Unknown LightDM prompt (type ' + type + '): ' + text);
     }

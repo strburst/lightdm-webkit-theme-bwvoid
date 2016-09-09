@@ -45,8 +45,8 @@
     $('#loginForm').find('input').keydown((function(event) {
       if (event.which === 13) {
         // Enter; submit username/password
-        showMessage('Attempting to authenticate ' + $('#username').val() +
-            '...', true);
+        showMessage('Attempting to authenticate ' + ($('#username').val() ||
+          'blank') + '...', true);
 
         // Disable input fields while authentication is occurring
         setInputActive(false);
